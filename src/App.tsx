@@ -1,160 +1,53 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
-import { BASE_DISH, BASE_PRICE, type MenuItem, type Topping } from './data/menu'
+import { useState } from 'react'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
-import { MenuSection } from './components/MenuSection'
-import { RandomFoodPicker } from './components/RandomFoodPicker'
-import { Cart, type CartItem } from './components/Cart'
-import { OrderTracking } from './components/OrderTracking'
-import type { ActiveOrder, DeliveryAddress } from './types/order'
-import { STATUS_STEPS } from './types/order'
+import { PopularProductsSection } from './components/PopularProductsSection'
+import { PlanFinderSection } from './components/PlanFinderSection'
+import { PlansSection } from './components/PlansSection'
+import { AdvisorSection } from './components/AdvisorSection'
+import { PlanningStepsSection } from './components/PlanningStepsSection'
+import { FaqSection } from './components/FaqSection'
+import { ContactSection } from './components/ContactSection'
+import { MobileActionBar } from './components/MobileActionBar'
 import './index.css'
 
-const NEXT_STATUS: Record<ActiveOrder['status'], ActiveOrder['status'] | null> = {
-  preparing: 'ready',
-  ready: 'delivering',
-  delivering: 'delivered',
-  delivered: null,
-}
-
-function getDuration(status: ActiveOrder['status']) {
-  if (status === 'delivered') return 0
-  return STATUS_STEPS.find((s) => s.id === status)?.duration ?? 4000
-}
-
 function App() {
-  const [selectedToppings, setSelectedToppings] = useState<Topping[]>([])
-  const [cart, setCart] = useState<CartItem[]>([])
-  const [cartOpen, setCartOpen] = useState(false)
-  const [justAdded, setJustAdded] = useState(false)
-  const [activeOrder, setActiveOrder] = useState<ActiveOrder | null>(null)
-  const [trackingOpen, setTrackingOpen] = useState(false)
+  const [plansCategory, setPlansCategory] = useState('health')
 
-  const customTotal = useMemo(
-    () => BASE_PRICE + selectedToppings.reduce((sum, t) => sum + t.price, 0),
-    [selectedToppings],
-  )
-
-  const flashAdded = useCallback(() => {
-    setJustAdded(true)
-    setTimeout(() => setJustAdded(false), 1200)
-  }, [])
-
-  const toggleTopping = useCallback((topping: Topping) => {
-    setSelectedToppings((prev) => {
-      const exists = prev.some((t) => t.id === topping.id)
-      return exists ? prev.filter((t) => t.id !== topping.id) : [...prev, topping]
+  const handleQuizRecommend = (categoryId: string) => {
+    setPlansCategory(categoryId)
+    requestAnimationFrame(() => {
+      document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' })
     })
-  }, [])
-
-  const addCustomToCart = useCallback(() => {
-    const item: CartItem = {
-      id: crypto.randomUUID(),
-      name: BASE_DISH.name,
-      emoji: BASE_DISH.emoji,
-      toppings: [...selectedToppings],
-      total: customTotal,
-    }
-    setCart((prev) => [...prev, item])
-    flashAdded()
-  }, [selectedToppings, customTotal, flashAdded])
-
-  const addMenuItem = useCallback(
-    (menuItem: MenuItem, extraToppings: Topping[] = []) => {
-      const toppingTotal = extraToppings.reduce((sum, t) => sum + t.price, 0)
-      const item: CartItem = {
-        id: crypto.randomUUID(),
-        name: menuItem.name,
-        emoji: menuItem.emoji,
-        toppings: extraToppings,
-        total: menuItem.price + toppingTotal,
-      }
-      setCart((prev) => [...prev, item])
-      flashAdded()
-    },
-    [flashAdded],
-  )
-
-  const removeFromCart = useCallback((id: string) => {
-    setCart((prev) => prev.filter((item) => item.id !== id))
-  }, [])
-
-  const checkout = useCallback(
-    (address: DeliveryAddress) => {
-      const orderTotal = cart.reduce((sum, item) => sum + item.total, 0)
-      setActiveOrder({
-        id: crypto.randomUUID(),
-        items: [...cart],
-        total: orderTotal,
-        address,
-        status: 'preparing',
-      })
-      setTrackingOpen(true)
-      setCart([])
-      setCartOpen(false)
-    },
-    [cart],
-  )
-
-  useEffect(() => {
-    if (!activeOrder || activeOrder.status === 'delivered') return
-
-    const next = NEXT_STATUS[activeOrder.status]
-    if (!next) return
-
-    const timer = setTimeout(() => {
-      setActiveOrder((prev) => (prev ? { ...prev, status: next } : null))
-    }, getDuration(activeOrder.status))
-
-    return () => clearTimeout(timer)
-  }, [activeOrder?.id, activeOrder?.status])
+  }
 
   return (
     <div className="app">
-      <Header
-        cartCount={cart.length}
-        hasActiveOrder={!!activeOrder && activeOrder.status !== 'delivered'}
-        onCartClick={() => setCartOpen(true)}
-        onTrackClick={() => setTrackingOpen(true)}
-      />
+      <Header />
       <main>
         <Hero />
-        <RandomFoodPicker onAddPick={addMenuItem} />
-        <MenuSection
-          selectedToppings={selectedToppings}
-          onToggleTopping={toggleTopping}
-          onAddCustom={addCustomToCart}
-          onAddItem={addMenuItem}
-          customTotal={customTotal}
-          justAdded={justAdded}
-        />
+        <PopularProductsSection />
+        <PlanFinderSection onRecommend={handleQuizRecommend} />
+        <PlansSection activeCategory={plansCategory} onCategoryChange={setPlansCategory} />
+        <AdvisorSection />
+        <PlanningStepsSection />
+        <FaqSection />
+        <ContactSection />
       </main>
       <footer className="footer">
-        <p>© 2026 KAI — ข้าวไข่เจียว · กะเพรา · ข้าวผัด สดใหม่ทุกจาน 🍳</p>
+        <p>
+          © 2026 AIA — ประกันชีวิต · สุขภาพ · อุบัติเหตุ · ลงทุน ปกป้องทุกช่วงชีวิต 🛡️
+        </p>
+        <p>
+          <a href="#contact" className="footer__link">
+            ติดต่อเรา
+          </a>
+        </p>
+        <p className="footer__disclaimer">
+          เว็บไซต์นี้จัดทำเพื่อการสาธิต ไม่ใช่เว็บไซต์อย่างเป็นทางการของ AIA
+        </p>
       </footer>
-
-      <Cart
-        open={cartOpen}
-        items={cart}
-        onClose={() => setCartOpen(false)}
-        onRemove={removeFromCart}
-        onCheckout={checkout}
-      />
-
-      <AnimatePresence>
-        {activeOrder && trackingOpen && (
-          <OrderTracking
-            order={activeOrder}
-            onClose={() => {
-              if (activeOrder.status === 'delivered') {
-                setActiveOrder(null)
-              }
-              setTrackingOpen(false)
-            }}
-          />
-        )}
-      </AnimatePresence>
+      <MobileActionBar />
     </div>
   )
 }

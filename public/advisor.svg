@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="400" y2="400">
+      <stop offset="0%" stop-color="#fce8ed"/>
+      <stop offset="100%" stop-color="#f5d0da"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="120" y1="260" x2="280" y2="400">
+      <stop offset="0%" stop-color="#d31145"/>
+      <stop offset="100%" stop-color="#a00d35"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="32" fill="url(#bg)"/>
+  <ellipse cx="200" cy="340" rx="120" ry="28" fill="rgba(26,18,8,0.08)"/>
+  <path d="M95 380c20-70 70-110 105-110s85 40 105 110H95z" fill="url(#shirt)"/>
+  <circle cx="200" cy="155" r="72" fill="#f4c4a8"/>
+  <path d="M128 120c8-42 40-68 72-68s64 26 72 68c-22 14-48 22-72 22s-50-8-72-22z" fill="#3d2314"/>
+  <circle cx="175" cy="158" r="6" fill="#2a1810"/>
+  <circle cx="225" cy="158" r="6" fill="#2a1810"/>
+  <path d="M188 188c8 8 16 8 24 0" stroke="#c97b5a" stroke-width="4" stroke-linecap="round"/>
+  <rect x="155" y="228" width="90" height="36" rx="18" fill="white" opacity="0.92"/>
+  <text x="200" y="252" text-anchor="middle" font-family="Noto Sans Thai, sans-serif" font-size="22" font-weight="700" fill="#d31145">AIA</text>
+</svg>

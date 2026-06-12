@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
-import { BASE_DISH } from '../data/menu'
-import { AnimatedBowl } from './AnimatedBowl'
+import { FLAGSHIP_PLAN } from '../data/insurance'
+import { LINE_HREF } from '../data/contact'
+import { ShieldVisual } from './ShieldVisual'
 
-const words = ['อร่อย', 'ฟู', 'กรอบ', 'ร้อนๆ']
+const chips = ['จ่ายไหวระยะยาว', 'คุ้มครองครบ', 'ปรึกษาฟรี', 'ดูแลหลังสมัคร']
 
 export function Hero() {
   return (
@@ -40,20 +41,20 @@ export function Hero() {
         }}
       >
         <motion.p className="hero__tag" variants={fadeUp}>
-          🔥 เปิดร้าน 10:00 – 20:00 ทุกวัน
+          🏆 ตัวแทนประกันชีวิต AIA มืออาชีพ
         </motion.p>
 
         <motion.h1 variants={fadeUp}>
-          {BASE_DISH.name}
-          <span className="hero__highlight"> สูตรลับ</span>
+          {FLAGSHIP_PLAN.headline}
+          <span className="hero__highlight"> {FLAGSHIP_PLAN.highlight}</span>
         </motion.h1>
 
         <motion.p className="hero__desc" variants={fadeUp}>
-          {BASE_DISH.description} พร้อมกะเพรา ข้าวผัด หลายเนื้อสัตว์ สดทำใหม่ทุกจาน
+          {FLAGSHIP_PLAN.description}
         </motion.p>
 
         <motion.div className="hero__chips" variants={fadeUp}>
-          {['ข้าวไข่เจียว', 'กะเพรา', 'ข้าวผัด', ...words].map((word, i) => (
+          {chips.map((word, i) => (
             <motion.span
               key={word}
               className="hero__chip"
@@ -71,22 +72,24 @@ export function Hero() {
 
         <div className="hero__actions">
           <motion.a
-            href="#random"
+            href={LINE_HREF}
             className="hero__cta hero__cta--fun"
             variants={fadeUp}
-            whileHover={{ scale: 1.04, boxShadow: '0 12px 40px rgba(244,162,54,0.45)' }}
+            target="_blank"
+            rel="noreferrer"
+            whileHover={{ scale: 1.04, boxShadow: '0 12px 40px rgba(211,17,69,0.35)' }}
             whileTap={{ scale: 0.96 }}
           >
-            🎲 สุ่มวันนี้กินอะไรดี
+            💬 คุยทาง LINE
           </motion.a>
           <motion.a
-            href="#order"
+            href="#popular"
             className="hero__cta"
             variants={fadeUp}
-            whileHover={{ scale: 1.04, boxShadow: '0 12px 40px rgba(232,93,58,0.45)' }}
+            whileHover={{ scale: 1.04, boxShadow: '0 12px 40px rgba(160,13,53,0.4)' }}
             whileTap={{ scale: 0.96 }}
           >
-            ดูเมนูทั้งหมด
+            ดูผลิตภัณฑ์ยอดนิยม
             <motion.span
               animate={{ x: [0, 6, 0] }}
               transition={{ duration: 1.2, repeat: Infinity }}
@@ -103,7 +106,7 @@ export function Hero() {
         animate={{ opacity: 1, scale: 1, rotate: 0 }}
         transition={{ type: 'spring', stiffness: 80, damping: 14, delay: 0.3 }}
       >
-        <AnimatedBowl toppings={[]} />
+        <ShieldVisual riders={[]} />
       </motion.div>
     </section>
   )
