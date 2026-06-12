@@ -2,10 +2,12 @@ import { motion } from 'framer-motion'
 
 type Props = {
   cartCount: number
+  hasActiveOrder: boolean
   onCartClick: () => void
+  onTrackClick: () => void
 }
 
-export function Header({ cartCount, onCartClick }: Props) {
+export function Header({ cartCount, hasActiveOrder, onCartClick, onTrackClick }: Props) {
   return (
     <motion.header
       className="header"
@@ -28,20 +30,42 @@ export function Header({ cartCount, onCartClick }: Props) {
       </div>
 
       <nav className="header__nav">
+        <a href="#random">สุ่มเมนู</a>
         <a href="#menu">เมนู</a>
         <a href="#order">สั่งเลย</a>
       </nav>
 
-      <motion.button
-        type="button"
-        className="header__cart"
-        onClick={onCartClick}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.92 }}
-      >
-        🛒 ตะกร้า
-        <AnimateBadge count={cartCount} />
-      </motion.button>
+      <div className="header__actions">
+        {hasActiveOrder && (
+          <motion.button
+            type="button"
+            className="header__track"
+            onClick={onTrackClick}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.92 }}
+          >
+            <motion.span
+              className="header__track-dot"
+              animate={{ scale: [1, 1.4, 1], opacity: [1, 0.5, 1] }}
+              transition={{ duration: 1.2, repeat: Infinity }}
+            />
+            ติดตามออเดอร์
+          </motion.button>
+        )}
+
+        <motion.button
+          type="button"
+          className="header__cart"
+          onClick={onCartClick}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.92 }}
+        >
+          🛒 ตะกร้า
+          <AnimateBadge count={cartCount} />
+        </motion.button>
+      </div>
     </motion.header>
   )
 }

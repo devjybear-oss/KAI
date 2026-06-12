@@ -49,11 +49,11 @@ export function Hero() {
         </motion.h1>
 
         <motion.p className="hero__desc" variants={fadeUp}>
-          {BASE_DISH.description} เลือกท็อปปิ้งได้ตามใจ สดทำใหม่ทุกจาน
+          {BASE_DISH.description} พร้อมกะเพรา ข้าวผัด หลายเนื้อสัตว์ สดทำใหม่ทุกจาน
         </motion.p>
 
         <motion.div className="hero__chips" variants={fadeUp}>
-          {words.map((word, i) => (
+          {['ข้าวไข่เจียว', 'กะเพรา', 'ข้าวผัด', ...words].map((word, i) => (
             <motion.span
               key={word}
               className="hero__chip"
@@ -69,21 +69,32 @@ export function Hero() {
           ))}
         </motion.div>
 
-        <motion.a
-          href="#order"
-          className="hero__cta"
-          variants={fadeUp}
-          whileHover={{ scale: 1.04, boxShadow: '0 12px 40px rgba(232,93,58,0.45)' }}
-          whileTap={{ scale: 0.96 }}
-        >
-          สั่งเลย เริ่มต้น 45 บาท
-          <motion.span
-            animate={{ x: [0, 6, 0] }}
-            transition={{ duration: 1.2, repeat: Infinity }}
+        <div className="hero__actions">
+          <motion.a
+            href="#random"
+            className="hero__cta hero__cta--fun"
+            variants={fadeUp}
+            whileHover={{ scale: 1.04, boxShadow: '0 12px 40px rgba(244,162,54,0.45)' }}
+            whileTap={{ scale: 0.96 }}
           >
-            →
-          </motion.span>
-        </motion.a>
+            🎲 สุ่มวันนี้กินอะไรดี
+          </motion.a>
+          <motion.a
+            href="#order"
+            className="hero__cta"
+            variants={fadeUp}
+            whileHover={{ scale: 1.04, boxShadow: '0 12px 40px rgba(232,93,58,0.45)' }}
+            whileTap={{ scale: 0.96 }}
+          >
+            ดูเมนูทั้งหมด
+            <motion.span
+              animate={{ x: [0, 6, 0] }}
+              transition={{ duration: 1.2, repeat: Infinity }}
+            >
+              →
+            </motion.span>
+          </motion.a>
+        </div>
       </motion.div>
 
       <motion.div
